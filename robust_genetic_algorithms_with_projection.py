@@ -2,7 +2,7 @@ import numpy as np
 import random
 
 # from objective_functions import objective_functions_configurations
-from genetic_algorithm import Genetic_Algorithm
+from genetic_algorithm_with_projection import RCGA_P
 
 from objective_functions import objective_functions_configurations
 
@@ -10,13 +10,12 @@ from objective_functions import objective_functions_configurations
 
 # Define GA parameters
 # OBJECTIVE_FUNCTION = "Sphere"  # Choose from "Ackley", "Sphere", "Rosenbrock"
-# Constants for the Genetic Algorithm
+# Constants for the Genetic Algorithm with projection
 # These can be adjusted based on the problem and desired performance
 # Population size, number of dimensions, bounds for the objective function, etc.
 POPULATION_SIZE = 100
-NUM_DIMENSIONS = 10 # Number of variables
 GENERATIONS = 1000
-CROSSOVER_RATE = 0.8 # Probability of crossover occurring
+CROSSOVER_RATE = 0.6 # Probability of crossover occurring
 MUTATION_RATE = 0.001 # Probability of a single gene being mutated
 ELITISM_COUNT = 1 # Number of best individuals to carry over
 
@@ -24,7 +23,7 @@ def create_individual(num_dimensions, bounds):
     return [random.uniform(bounds[0], bounds[1]) for _ in range(num_dimensions)]
 
 
-def running_GA(
+def running_RCGA_P(
     calculate_fitness,
     OBJECTIVE_FUNCTION,
     pop_size,
@@ -35,21 +34,21 @@ def running_GA(
     mutation_rate,
     elitism_count=1):
 
-  population = [create_individual(num_dimensions, bounds) for _ in range(10)]
+  population = [create_individual(num_dimensions, bounds) for _ in range(pop_size)]
   best_overall_individual = None
-  best_overall_fitness = -float('inf') # Initialize with a very low fitness value
+  best_overall_fitness = float('inf') # Initialize with a very low fitness value
   best_fitness_history = []
 
   function_calls = 0
-  print(f"\nStarting Genetic Algorithm for {OBJECTIVE_FUNCTION} Function")
+  print(f"\nStarting Genetic Algorithm with projection for {OBJECTIVE_FUNCTION} Function")
 
   for generation in range(generations):
     # Evaluate fitness for all individuals in the current population
     current_population_fitness = [(ind, calculate_fitness(ind)) for ind in population]
     #Tracking function evaluations
     function_calls += len(current_population_fitness)
-    # Sort the population by fitness in descending order (highest fitness first)
-    current_population_fitness.sort(key=lambda item: item[1], reverse=True)
+    # Sort the population by fitness in descending order (best fitness first)
+    current_population_fitness.sort(key=lambda item: item[1],)
 
 
 
@@ -58,7 +57,7 @@ def running_GA(
     current_best_fitness_gen = current_population_fitness[0][1]
     best_fitness_history.append(current_best_fitness_gen)
 
-    if current_best_fitness_gen > best_overall_fitness:
+    if current_best_fitness_gen < best_overall_fitness:
       best_overall_fitness = current_best_fitness_gen
       # Store a copy of the best individual's genes
       best_overall_individual = list(current_best_individual_gen)
@@ -76,7 +75,7 @@ def running_GA(
     # Select m = N solutions from Pt as parents using linear-ranked selection to form a mating pool P_hat.
     fitness = [item[1] for item in current_population_fitness]
     population = np.array(population)
-    mating_pool = Genetic_Algorithm.linear_ranked_selection(population, pop_size, fitness)
+    mating_pool = RCGA_P.linear_ranked_selection(population, pop_size, fitness)
     # Convert the mating pool to a list to use the .pop() method
     mating_pool = mating_pool.tolist()
     # Shuffle the mating pool to randomize the order for sequential selection
@@ -94,7 +93,7 @@ def running_GA(
       if len(mating_pool) < 2:
         # If mating pool runs out, re-select a new pool or shuffle existing.
         # For robustness, let's re-select a new mating pool if it's too small.
-        mating_pool = Genetic_Algorithm.select_parents(population, pop_size)
+        mating_pool = RCGA_P.select_parents(population, pop_size)
         mating_pool = mating_pool.tolist() # Convert to list
         random.shuffle(mating_pool)
 
@@ -102,13 +101,13 @@ def running_GA(
       parent2 = mating_pool.pop(0) # Get second parent
       selected_parents = np.array([parent1, parent2])
 
-      crossed_parents = Genetic_Algorithm.arithmetic_crossover(selected_parents, crossover_rate, bounds)
+      crossed_parents = RCGA_P.arithmetic_crossover(selected_parents, crossover_rate, bounds)
 
       # 5. Using random mutation, perform mutation on each component of yi,t ∈ Ct
       #  with a low probability, pμ, to create Mt.
-      mutated_parents = Genetic_Algorithm.mutation(crossed_parents, mutation_rate, bounds)
+      mutated_parents = RCGA_P.mutation(crossed_parents, mutation_rate, bounds)
 
-      projected_mutated_parents = Genetic_Algorithm.projection_based_generation(mutated_parents, calculate_fitness)
+      projected_mutated_parents = RCGA_P.projection_based_generation(mutated_parents, calculate_fitness)
 
       new_population.extend(projected_mutated_parents)
 
@@ -123,7 +122,7 @@ def running_GA(
 
     min_value = calculate_fitness(best_overall_individual)
 
-    if min_value > -10**-6:
+    if min_value < 10**-6:
       print(f"Early stopping at generation {generation + 1} with fitness {best_overall_fitness:.6f}")
       break
 
@@ -137,23 +136,7 @@ def running_GA(
   print(f"Final Best Result:")
   print(f"Solution: {np.round(best_overall_individual, 6)}")
   print(f"{OBJECTIVE_FUNCTION}'s Function Value: {min_value:.6f}")
-  print(f"Expected Minimum is 0 at: {[objective_functions_configurations[OBJECTIVE_FUNCTION]["minimum"]] * NUM_DIMENSIONS}")
+  print(f"Expected Minimum is 0 at: {[objective_functions_configurations[OBJECTIVE_FUNCTION]["minimum"]] * num_dimensions}")
   return best_overall_individual, min_value, best_fitness_history, function_calls
 
 
-# Run the Genetic OBJECTIVE_FUNCTION
-# best_solution, min_value, fitness_history = running_GA(
-#     pop_size=POPULATION_SIZE,
-#     num_dimensions=NUM_DIMENSIONS,
-#     bounds= objective_functions_configurations[OBJECTIVE_FUNCTION]["bounds"],
-#     generations=GENERATIONS,
-#     crossover_rate=CROSSOVER_RATE,
-#     mutation_rate=MUTATION_RATE,
-#     elitism_count=ELITISM_COUNT
-# )
-
-
-# print(f"\nFinal Best Result:")
-# print(f"Solution: {np.round(best_solution, 6)}")
-# print(f"{OBJECTIVE_FUNCTION}'s Function Value: {min_value:.6f}")
-# print(f"Expected Minimum is 0 at: {[objective_functions_configurations[OBJECTIVE_FUNCTION]["value_at_minimum"]] * NUM_DIMENSIONS}")

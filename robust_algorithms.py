@@ -1,5 +1,5 @@
 from robust_cma_es import run_cma_es
-from robust_genetic_algorithms import running_GA
+from robust_genetic_algorithms_with_projection import running_RCGA_P
 
 
 algorithms = {
@@ -10,6 +10,6 @@ algorithms = {
     },
     "RCGA-P" : {
         "name": "RCGA-P",
-        "function": running_GA,
-        "description": "Robust Genetic Algorithm with Elitism and linear ranked  Selection."
+        "function": running_RCGA_P,
+        "description": "Robust Genetic Algorithm with projection with Elitism and linear ranked  Selection."
 }}

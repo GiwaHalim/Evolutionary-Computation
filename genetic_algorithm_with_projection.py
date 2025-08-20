@@ -1,14 +1,10 @@
 import numpy as np
 
-class Genetic_Algorithm:
-  @staticmethod
-  def calculate_fitness(individual):
-    raise NotImplementedError("Subclasses must implement this method")
-
+class RCGA_P:
   @staticmethod
   def linear_ranked_selection(population, num_parents_to_select, fitness):
     N = len(population)  #length of population
-    # Sort indices based on fitness in descending order (highest fitness first)
+    # Sort indices based on fitness in ascending order (highest fitness first)
     ranked_indices = np.argsort(fitness)[::-1]
 
     # Linear rank selection formula
@@ -81,10 +77,6 @@ class Genetic_Algorithm:
 
   @staticmethod
   def projection_based_generation(M_t, fitness_func):
-    """
-    M_t: Current population (list or array of vectors)
-    fitness_func: Function that takes a vector and returns a scalar fitness
-    """
     M_t = np.array(M_t, dtype=float)  # Ensure it's a NumPy array
     m = len(M_t)
     new_population = []
@@ -97,10 +89,10 @@ class Genetic_Algorithm:
         fx = fitness_func(x)
         fy = fitness_func(y)
 
-        if fx > fy:
-            s = Genetic_Algorithm.vector_projection(x, y)  # project x onto y
+        if fx < fy:
+            s = RCGA_P.vector_projection(x, y)  # project x onto y
         else:
-            s = Genetic_Algorithm.vector_projection(y, x)  # project y onto x
+            s = RCGA_P.vector_projection(y, x)  # project y onto x
 
         new_population.append(s)
 

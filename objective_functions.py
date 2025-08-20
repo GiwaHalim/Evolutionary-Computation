@@ -16,7 +16,7 @@ class Ackley():
 
   @staticmethod
   def calculate_fitness(x):
-    return -abs(Ackley.fitness_function(x) - 0)
+    return abs(Ackley.fitness_function(x))
 
 import numpy as np
 
@@ -52,7 +52,7 @@ class RotatedAckley:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedAckley.fitness_function(x) - 0)
+        return abs(RotatedAckley.fitness_function(x))
 
 
 class Sphere():
@@ -62,7 +62,7 @@ class Sphere():
 
   @staticmethod
   def calculate_fitness(x):
-    return -abs(Sphere.fitness_function(x) - 0)
+    return abs(Sphere.fitness_function(x))
 
 class Rosenbrock():
   @staticmethod
@@ -71,7 +71,7 @@ class Rosenbrock():
 
   @staticmethod
   def calculate_fitness(x):
-    return -abs(Rosenbrock.fitness_function(x) - 0)
+    return abs(Rosenbrock.fitness_function(x))
   
 class RotatedRosenbrock:
     rotation_matrix = None
@@ -93,7 +93,7 @@ class RotatedRosenbrock:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedRosenbrock.fitness_function(x))
+        return abs(RotatedRosenbrock.fitness_function(x))
 
   
 class HighConditionedElliptic:
@@ -104,7 +104,7 @@ class HighConditionedElliptic:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(HighConditionedElliptic.fitness_function(x) - 0)
+        return abs(HighConditionedElliptic.fitness_function(x))
 
 class BentCigar:
     @staticmethod
@@ -113,7 +113,7 @@ class BentCigar:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(BentCigar.fitness_function(x) - 0)
+        return abs(BentCigar.fitness_function(x))
 
 class RotatedBentCigar:
     rotation_matrix = None
@@ -135,7 +135,7 @@ class RotatedBentCigar:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedBentCigar.fitness_function(x))
+        return abs(RotatedBentCigar.fitness_function(x))
 
 
 class Discus:
@@ -145,7 +145,7 @@ class Discus:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Discus.fitness_function(x) - 0)
+        return abs(Discus.fitness_function(x))
     
 class RotatedDiscus:
     rotation_matrix = None
@@ -167,7 +167,7 @@ class RotatedDiscus:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedDiscus.fitness_function(x))
+        return abs(RotatedDiscus.fitness_function(x))
 
 
 class DifferentPowers:
@@ -178,7 +178,7 @@ class DifferentPowers:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(DifferentPowers.fitness_function(x) - 0)
+        return abs(DifferentPowers.fitness_function(x))
 
 class SchaffersF7:
     @staticmethod
@@ -188,7 +188,7 @@ class SchaffersF7:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(SchaffersF7.fitness_function(x) - 0)
+        return abs(SchaffersF7.fitness_function(x))
 class RotatedSchaffersF7:
     rotation_matrix = None
 
@@ -213,7 +213,7 @@ class RotatedSchaffersF7:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedSchaffersF7.fitness_function(x))
+        return abs(RotatedSchaffersF7.fitness_function(x))
 
 
 class Weierstrass:
@@ -226,7 +226,7 @@ class Weierstrass:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Weierstrass.fitness_function(x) - 0)
+        return abs(Weierstrass.fitness_function(x))
     
 class RotatedWeierstrass:
     rotation_matrix = None
@@ -257,7 +257,7 @@ class RotatedWeierstrass:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedWeierstrass.fitness_function(x))
+        return abs(RotatedWeierstrass.fitness_function(x))
 
 
 class Griewank:
@@ -269,7 +269,7 @@ class Griewank:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Griewank.fitness_function(x) - 0)
+        return abs(Griewank.fitness_function(x))
     
 class RotatedGriewank:
     rotation_matrix = None
@@ -293,7 +293,7 @@ class RotatedGriewank:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedGriewank.fitness_function(x))
+        return abs(RotatedGriewank.fitness_function(x))
 
 
 class Rastrigin:
@@ -303,7 +303,7 @@ class Rastrigin:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Rastrigin.fitness_function(x) - 0)
+        return abs(Rastrigin.fitness_function(x))
     
 class RotatedRastrigin:
     rotation_matrix = None
@@ -325,7 +325,7 @@ class RotatedRastrigin:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedRastrigin.fitness_function(x))
+        return abs(RotatedRastrigin.fitness_function(x))
 
 
 class Schwefel:
@@ -335,7 +335,7 @@ class Schwefel:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Schwefel.fitness_function(x) - 0)
+        return abs(Schwefel.fitness_function(x))
 
 class Katsuura:
     @staticmethod
@@ -346,7 +346,7 @@ class Katsuura:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(Katsuura.fitness_function(x) - 0)
+        return abs(Katsuura.fitness_function(x))
     
 class RotatedKatsuura:
     rotation_matrix = None
@@ -375,7 +375,7 @@ class RotatedKatsuura:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(RotatedKatsuura.fitness_function(x))
+        return abs(RotatedKatsuura.fitness_function(x))
 
 
 class LunacekBiRastrigin:
@@ -390,7 +390,7 @@ class LunacekBiRastrigin:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(LunacekBiRastrigin.fitness_function(x) - 0)
+        return abs(LunacekBiRastrigin.fitness_function(x))
 
 class GriewankRosenbrock:
     @staticmethod
@@ -399,7 +399,7 @@ class GriewankRosenbrock:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(GriewankRosenbrock.fitness_function(x) - 0)
+        return abs(GriewankRosenbrock.fitness_function(x))
 
 class SchaffersF6:
     @staticmethod
@@ -409,7 +409,7 @@ class SchaffersF6:
 
     @staticmethod
     def calculate_fitness(x):
-        return -abs(SchaffersF6.fitness_function(x) - 0)
+        return abs(SchaffersF6.fitness_function(x))
 
 
 
@@ -438,14 +438,14 @@ objective_functions_configurations = {
     "Rosenbrock": {
         "objective_function": Rosenbrock,
         "bounds": [-5, 5],
-        "minimum": 0,
+        "minimum": 1,
         "value_at_minimum": 0,
         "step_size": 0.1
     },
     "RotatedRosenbrock": {
         "objective_function": RotatedRosenbrock,
         "bounds": [-5, 5],
-        "minimum": 0,
+        "minimum": 1,
         "value_at_minimum": 0,
         "step_size": 0.1
     },
@@ -454,14 +454,14 @@ objective_functions_configurations = {
         "bounds": [-5, 5],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 2.0
     },
     "BentCigar": {
         "objective_function": BentCigar,
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "RotatedBentCigar": {
         "objective_function": RotatedBentCigar,
@@ -475,14 +475,14 @@ objective_functions_configurations = {
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "RotatedDiscus": {
         "objective_function": RotatedDiscus,
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "DifferentPowers": {
         "objective_function": DifferentPowers,
@@ -524,21 +524,21 @@ objective_functions_configurations = {
         "bounds": [-600, 600],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 10.0
+        "step_size": 100.0
     },
     "RotatedGriewank": {
         "objective_function": RotatedGriewank,
         "bounds": [-600, 600],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 10.0
+        "step_size": 100.0
     },
     "Rastrigin": {
         "objective_function": Rastrigin,
         "bounds": [-5.12, 5.12],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 1.0
     },
     "RotatedRastrigin": {
         "objective_function": RotatedRastrigin,
@@ -552,7 +552,7 @@ objective_functions_configurations = {
         "bounds": [-500, 500],
         "minimum": 420.9687,
         "value_at_minimum": 0,
-        "step_size": 5.0
+        "step_size": 100
     },
     "Katsuura": {
         "objective_function": Katsuura,
@@ -573,14 +573,14 @@ objective_functions_configurations = {
         "bounds": [-5, 5],
         "minimum": 2.5,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 1
     },
     "GriewankRosenbrock": {
         "objective_function": GriewankRosenbrock,
         "bounds": [-5, 5],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 1
     },
     "SchaffersF6": {
         "objective_function": SchaffersF6,

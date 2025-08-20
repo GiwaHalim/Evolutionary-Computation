@@ -12,6 +12,7 @@ class CMA_ES:
 
         # Selection parameters
         self.lambda_ = 4 + int(3 * np.log(N))  # Population size
+        # self.lambda_ = 500  # Population size
         self.mu = self.lambda_ // 2
         self.weights = np.log(self.mu + 0.5) - np.log(np.arange(1, self.mu + 1))
         self.weights /= np.sum(self.weights)
@@ -35,7 +36,8 @@ class CMA_ES:
         self.counteval = 0
 
     def run(self):
-        xmean = np.random.rand(self.N)  # Initial mean
+        lower_bound, upper_bound = self.bounds
+        xmean = np.random.uniform(lower_bound, upper_bound, self.N)  # Initial mean
 
         best_overall_individual = None
         best_overall_fitness = float('inf') # Initialize with a very high fitness value
@@ -44,13 +46,30 @@ class CMA_ES:
         for generation in range(self.gen):
             # Generate and evaluate offspring
             arz = np.random.randn(self.N, self.lambda_)
-            ary = self.B @ (self.D.reshape(-1, 1) * arz)
+            ary = self.B @ (self.D.reshape(-1, 1) * arz) 
             arx = xmean.reshape(-1, 1) + self.sigma * ary
             arfitness = np.apply_along_axis(self.objective_func, 0, arx)
 
-            # Apply bounds
-            lower_bound, upper_bound = self.bounds
-            arx = np.clip(arx, lower_bound, upper_bound)
+            for i in range(self.lambda_):
+                penalty = 0.0
+                # Check if this solution is invalid
+                invalid = False
+    
+                # Check all dimensions for bounds violation
+                for d in range(self.N):
+                    if arx[d, i] > upper_bound or arx[d, i] < lower_bound:
+                        invalid = True
+                        break
+    
+                # Only calculate penalty if the solution is invalid
+                if invalid:
+                    for d in range(self.N):
+                        if arx[d, i] < lower_bound:
+                            penalty += (lower_bound - arx[d, i]) ** 2
+                        elif arx[d, i] > upper_bound:
+                            penalty += (arx[d, i] - upper_bound) ** 2
+                    # Apply large penalty to invalid solutions
+                    arfitness[i] += 1e10 * penalty
 
             self.counteval += self.lambda_
 
@@ -86,10 +105,10 @@ class CMA_ES:
             self.sigma *= np.exp((self.cs / self.damps) * (np.linalg.norm(self.ps) / self.chiN - 1))
 
             # Decomposition of C
-            if self.counteval - self.lambda_ * np.floor(self.counteval / self.lambda_) < 1:
-                self.C = np.triu(self.C) + np.triu(self.C, 1).T
-                self.D, self.B = np.linalg.eigh(self.C)
-                self.D = np.sqrt(np.maximum(self.D, 1e-20))   
+            # if self.counteval - self.lambda_ * np.floor(self.counteval / self.lambda_) < 1:
+            self.C = np.triu(self.C) + np.triu(self.C, 1).T
+            self.D, self.B = np.linalg.eigh(self.C)
+            self.D = np.sqrt(np.maximum(self.D, 1e-20))   
 
             if -abs(best_overall_fitness - 0)  > -10**-6:
                 print(f"Early stopping at generation {generation + 1} with fitness {best_overall_fitness:.6f}")
