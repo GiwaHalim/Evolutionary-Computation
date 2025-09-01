@@ -337,45 +337,94 @@ class Schwefel:
     def calculate_fitness(x):
         return abs(Schwefel.fitness_function(x))
 
+# class Katsuura:
+#     @staticmethod
+#     def fitness_function(x):
+#         d = len(x)
+#         return np.prod([(1 + (i + 1) * sum(abs(2**j * xi - round(2**j * xi)) / 2**j for j in range(1, 33)))
+#                         ** (10 / d**1.2) for i, xi in enumerate(x)]) - 1
+
+#     @staticmethod
+#     def calculate_fitness(x):
+#         return abs(Katsuura.fitness_function(x))
+
 class Katsuura:
     @staticmethod
     def fitness_function(x):
         d = len(x)
-        return np.prod([(1 + (i + 1) * sum(abs(2**j * xi - round(2**j * xi)) / 2**j for j in range(1, 33)))
-                        ** (10 / d**1.2) for i, xi in enumerate(x)]) - 1
+        return np.prod([
+            (1 + (i + 1) * sum(abs(2**j * xi - np.floor(2**j * xi)) / (2**j) for j in range(1, 33))) ** (10 / d**1.2)
+            for i, xi in enumerate(x)
+        ]) - 1
 
     @staticmethod
     def calculate_fitness(x):
         return abs(Katsuura.fitness_function(x))
-    
+
+# class RotatedKatsuura:
+#     rotation_matrix = None
+
+#     @staticmethod
+#     def initialize_rotation_matrix(dimension, seed=None):
+#         if seed is not None:
+#             np.random.seed(seed)
+#         A = np.random.randn(dimension, dimension)
+#         Q, _ = np.linalg.qr(A)
+#         RotatedKatsuura.rotation_matrix = Q
+
+#     @staticmethod
+#     def fitness_function(x):
+#         x = np.asarray(x)
+#         RotatedKatsuura.initialize_rotation_matrix(len(x))
+#         z = RotatedKatsuura.rotation_matrix @ x
+#         n = len(z)
+#         product = 1
+#         for i in range(n):
+#             sum_inner = 0
+#             for j in range(1, 33):
+#                 sum_inner += abs(2 ** j * z[i] - round(2 ** j * z[i])) / 2 ** j
+#             product *= (1 + (i + 1) * sum_inner) ** (10 / n ** 1.2)
+#         return product - 1
+
+#     @staticmethod
+#     def calculate_fitness(x):
+#         return abs(RotatedKatsuura.fitness_function(x))
+
+import numpy as np
+
 class RotatedKatsuura:
     rotation_matrix = None
 
     @staticmethod
     def initialize_rotation_matrix(dimension, seed=None):
-        if seed is not None:
-            np.random.seed(seed)
-        A = np.random.randn(dimension, dimension)
-        Q, _ = np.linalg.qr(A)
-        RotatedKatsuura.rotation_matrix = Q
+        if RotatedKatsuura.rotation_matrix is None:
+            if seed is not None:
+                np.random.seed(seed)
+            A = np.random.randn(dimension, dimension)
+            Q, _ = np.linalg.qr(A)
+            RotatedKatsuura.rotation_matrix = Q
 
     @staticmethod
     def fitness_function(x):
         x = np.asarray(x)
-        RotatedKatsuura.initialize_rotation_matrix(len(x))
+        n = len(x)
+        RotatedKatsuura.initialize_rotation_matrix(n)
         z = RotatedKatsuura.rotation_matrix @ x
-        n = len(z)
+        
         product = 1
         for i in range(n):
-            sum_inner = 0
-            for j in range(1, 33):
-                sum_inner += abs(2 ** j * z[i] - round(2 ** j * z[i])) / 2 ** j
+            sum_inner = sum(
+                abs(2 ** j * z[i] - np.floor(2 ** j * z[i])) / (2 ** j)
+                for j in range(1, 33)
+            )
             product *= (1 + (i + 1) * sum_inner) ** (10 / n ** 1.2)
+        
         return product - 1
 
     @staticmethod
     def calculate_fitness(x):
         return abs(RotatedKatsuura.fitness_function(x))
+
 
 
 class LunacekBiRastrigin:
@@ -419,28 +468,28 @@ objective_functions_configurations = {
         "bounds": [-5, 5],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 1
     },
     "Ackley": {
         "objective_function": Ackley,
         "bounds": [-32, 32],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.5
+        "step_size": 1.0
     },
     "RotatedAckley": {
         "objective_function": RotatedAckley,
         "bounds": [-32, 32],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 0.5
+        "step_size": 1.0
     },
     "Rosenbrock": {
         "objective_function": Rosenbrock,
         "bounds": [-5, 5],
         "minimum": 1,
         "value_at_minimum": 0,
-        "step_size": 0.1
+        "step_size": 1.0
     },
     "RotatedRosenbrock": {
         "objective_function": RotatedRosenbrock,
@@ -454,7 +503,7 @@ objective_functions_configurations = {
         "bounds": [-5, 5],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 2.0
+        "step_size": 1.0
     },
     "BentCigar": {
         "objective_function": BentCigar,
@@ -468,7 +517,7 @@ objective_functions_configurations = {
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "Discus": {
         "objective_function": Discus,
@@ -559,14 +608,14 @@ objective_functions_configurations = {
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "RotatedKatsuura": {
         "objective_function": RotatedKatsuura,
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     },
     "LunacekBiRastrigin": {
         "objective_function": LunacekBiRastrigin,
@@ -587,6 +636,6 @@ objective_functions_configurations = {
         "bounds": [-100, 100],
         "minimum": 0,
         "value_at_minimum": 0,
-        "step_size": 1.0
+        "step_size": 50.0
     }
 }

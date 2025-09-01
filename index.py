@@ -88,6 +88,7 @@ def success_rate():
             for obj in user_config["selected_objectives"]:
                 success_rate = 0
                 for i in range(100):
+                    print(f"{i + 1} / 100")
                     test = algo['function'](
                         objective_func=obj['objective_function'].fitness_function,
                         OBJECTIVE_FUNCTION=obj['objective_function'].__name__,
@@ -107,6 +108,7 @@ def success_rate():
             for obj in user_config["selected_objectives"]:
                 success_rate = 0
                 for i in range(100):
+                    print(f"{i + 1} / 100")
                     test = algo['function'](
                         calculate_fitness=obj['objective_function'].calculate_fitness,
                         OBJECTIVE_FUNCTION=obj['objective_function'].__name__,
@@ -223,7 +225,7 @@ def submit():
                     # canvas.get_tk_widget().pack(pady=10)
 
                 mfe = np.mean(function_evals_list)
-                best_run_index = np.argmax(best_fitness)
+                best_run_index = np.argmin(best_fitness)
                 best_of_best = best_individuals[best_run_index]
                 best_of_best_val = best_fitness[best_run_index]
                 best_fitness_history_at_the_end_of_five_runs = fitness_histories[best_run_index]
@@ -285,7 +287,7 @@ def submit():
                     fitness_histories.append(fitness_history)
 
                 mfe = np.mean(function_evals_list)
-                best_run_index = np.argmax(best_fitness)
+                best_run_index = np.argmin(best_fitness)
                 best_of_best = best_individuals[best_run_index]
                 best_of_best_val = best_fitness[best_run_index]
                 best_fitness_history_at_the_end_of_five_runs = fitness_histories[best_run_index]

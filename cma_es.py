@@ -11,8 +11,8 @@ class CMA_ES:
         self.bounds = bounds
 
         # Selection parameters
-        self.lambda_ = 4 + int(3 * np.log(N))  # Population size
-        # self.lambda_ = 500  # Population size
+        # self.lambda_ = 4 + int(3 * np.log(N))  # Population size
+        self.lambda_ = 500  # Population size
         self.mu = self.lambda_ // 2
         self.weights = np.log(self.mu + 0.5) - np.log(np.arange(1, self.mu + 1))
         self.weights /= np.sum(self.weights)

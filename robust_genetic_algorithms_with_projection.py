@@ -13,7 +13,7 @@ from objective_functions import objective_functions_configurations
 # Constants for the Genetic Algorithm with projection
 # These can be adjusted based on the problem and desired performance
 # Population size, number of dimensions, bounds for the objective function, etc.
-POPULATION_SIZE = 100
+POPULATION_SIZE = 500
 GENERATIONS = 1000
 CROSSOVER_RATE = 0.6 # Probability of crossover occurring
 MUTATION_RATE = 0.001 # Probability of a single gene being mutated
